@@ -20,74 +20,102 @@ log(artboardContainer);
 var containerHeight = artboardContainer.frame().height()
 var containerWidth = artboardContainer.frame().width()
 
+var overlap = true;
+
+var rotate = true;
+
 // log('artboard height: ' + containerHeight)
 // log('artboard width: ' + containerWidth)
 
 
-var cloneCount = [doc askForUserInput:"How many copies should we create & distribute?" initialValue:"10"]
+var cloneCount = [doc askForUserInput:"How many copies should we create?" initialValue:"10"]
 
-if(typeof(cloneCount) == 'number'){
+if(cloneCount > 0){
 
-	function createSelect(msg){
-
-	  var accessory = [[NSButton alloc] initWithFrame:NSMakeRect(0,0,230,25)]
-	  [accessory setButtonType:(NSSwitchButton)]
-	  [accessory setTitle:"Contain distribution within artboard"]
-
+	function getRotateOption(msg){
 	  var alert = [[NSAlert alloc] init]
 	  [alert setMessageText:msg]
-	  [alert addButtonWithTitle:'Go!']
-	  [alert addButtonWithTitle:'Cancel']
-	  [alert setAccessoryView:accessory]
+	  [alert setInformativeText: "Do you want the cloned layers to be randomly rotated?"];
+	  [alert addButtonWithTitle:'Yes']
+	  [alert addButtonWithTitle:'No']
 
-	  var responseCode = [alert runModal]
-	  var choice = [accessory state]
+	  var choice = [alert runModal]
 
-	  return [responseCode, choice]
+	  return [choice]
 	}
 
-	var choice = createSelect('RandOhm!')
+	var rotateOption = getRotateOption('Randomly rotate the layers?')
 
-	log(choice)
+	if(rotateOption == 1001){
+		log('false')
+		rotate = false;
+	}
+
+	function getOverlapOption(msg){
+	  var alert = [[NSAlert alloc] init]
+	  [alert setMessageText:msg]
+	  [alert setInformativeText: "Would you like to allow the cloned layers to overlap on the artboard edge?"];
+	  [alert addButtonWithTitle:'Yes']
+	  [alert addButtonWithTitle:'No']
+
+	  var choice = [alert runModal]
+
+	  return [choice]
+	}
+
+	var option = getOverlapOption('One last question...')
+
+	if(option == 1001){
+		overlap = false;
+	}
+
+
 
 
 	for (var i = 0; i < selection.length(); i++) {
 		var curLayer = selection[i];
-
-		var randomX = Math.random() * (containerWidth - layerWidth);
-		var randomY = Math.random() * (containerHeight - layerHeight);
 		var randomRotate = Math.random() * 360;
 
+		if(overlap == false){
+			var randomX = Math.random() * (containerWidth - layerWidth);
+			var randomY = Math.random() * (containerHeight - layerHeight);
+		}
+		else{
 	    // extend boundaries
-	    // var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
-	    // var randomY = Math.random() * (containerHeight + layerHeight) - (layerHeight);
+	    var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
+	    var randomY = Math.random() * (containerHeight + layerHeight) - (layerHeight);
+		}
 
 		curLayer.frame().setX(randomX);
 	    curLayer.frame().setY(randomY);
-	    curLayer.setRotation(randomRotate);
+	    if(rotate){curLayer.setRotation(randomRotate)};
 	}
 
 	for (var i = 0; i < selection.length(); i++) {
 		for (var j = 0; j < cloneCount; j++) {
 		    var layer = selection[i];
 		    var duplicated = layer.duplicate();
-
-		    var randomX = Math.random() * (containerWidth - layerWidth);
-		    var randomY = Math.random() * (containerHeight - layerHeight);
 		    var randomRotate = Math.random() * 360;
 
-		    // extend boundaries
-		    // var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
-		    // var randomY = Math.random() * (containerHeight + layerHeight) - (layerHeight);
+		    if(overlap == false){
+			    var randomX = Math.random() * (containerWidth - layerWidth);
+			    var randomY = Math.random() * (containerHeight - layerHeight);
+			}
+			else{
+				// extend boundaries
+		    	var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
+		    	var randomY = Math.random() * (containerHeight + layerHeight) - (layerHeight);
+			}
 
 
 		    duplicated.frame().setX(randomX);
 		    duplicated.frame().setY(randomY);
-		    duplicated.setRotation(randomRotate);
+		    if(rotate){duplicated.setRotation(randomRotate)};
 		}
 	}
 }
 else{
+	log(cloneCount)
 	var app = [NSApplication sharedApplication];
-	[app displayDialog:"Woah there! Please enter numbers only, please" withTitle:"RandOhm error"]
+	[app displayDialog:"Woah there! Please enter numbers over 0 only, please" withTitle:"RandOhm error"]
 }
