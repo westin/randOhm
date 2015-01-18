@@ -24,41 +24,70 @@ var containerWidth = artboardContainer.frame().width()
 // log('artboard width: ' + containerWidth)
 
 
-for (var i = 0; i < selection.length(); i++) {
-	var curLayer = selection[i];
+var cloneCount = [doc askForUserInput:"How many copies should we create & distribute?" initialValue:"10"]
 
-	var randomX = Math.random() * (containerWidth - layerWidth);
-	var randomY = Math.random() * (containerHeight - layerHeight);
-	var randomRotate = Math.random() * 360;
+if(typeof(cloneCount) == 'number'){
 
-    // extend boundaries
-    // var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
-    // var randomY = Math.random() * (containerHeight + layerHeight) - (layerHeight);
+	function createSelect(msg){
 
-	curLayer.frame().setX(randomX);
-    curLayer.frame().setY(randomY);
-    curLayer.setRotation(randomRotate);
-}
+	  var accessory = [[NSButton alloc] initWithFrame:NSMakeRect(0,0,230,25)]
+	  [accessory setButtonType:(NSSwitchButton)]
+	  [accessory setTitle:"Contain distribution within artboard"]
+
+	  var alert = [[NSAlert alloc] init]
+	  [alert setMessageText:msg]
+	  [alert addButtonWithTitle:'Go!']
+	  [alert addButtonWithTitle:'Cancel']
+	  [alert setAccessoryView:accessory]
+
+	  var responseCode = [alert runModal]
+	  var choice = [accessory state]
+
+	  return [responseCode, choice]
+	}
+
+	var choice = createSelect('RandOhm!')
+
+	log(choice)
 
 
-var count = 10;
+	for (var i = 0; i < selection.length(); i++) {
+		var curLayer = selection[i];
 
-for (var i = 0; i < selection.length(); i++) {
-	for (var j = 0; j < count; j++) {
-	    var layer = selection[i];
-	    var duplicated = layer.duplicate();
-
-	    var randomX = Math.random() * (containerWidth - layerWidth);
-	    var randomY = Math.random() * (containerHeight - layerHeight);
-	    var randomRotate = Math.random() * 360;
+		var randomX = Math.random() * (containerWidth - layerWidth);
+		var randomY = Math.random() * (containerHeight - layerHeight);
+		var randomRotate = Math.random() * 360;
 
 	    // extend boundaries
 	    // var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
 	    // var randomY = Math.random() * (containerHeight + layerHeight) - (layerHeight);
 
-
-	    duplicated.frame().setX(randomX);
-	    duplicated.frame().setY(randomY);
-	    duplicated.setRotation(randomRotate);
+		curLayer.frame().setX(randomX);
+	    curLayer.frame().setY(randomY);
+	    curLayer.setRotation(randomRotate);
 	}
+
+	for (var i = 0; i < selection.length(); i++) {
+		for (var j = 0; j < cloneCount; j++) {
+		    var layer = selection[i];
+		    var duplicated = layer.duplicate();
+
+		    var randomX = Math.random() * (containerWidth - layerWidth);
+		    var randomY = Math.random() * (containerHeight - layerHeight);
+		    var randomRotate = Math.random() * 360;
+
+		    // extend boundaries
+		    // var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
+		    // var randomY = Math.random() * (containerHeight + layerHeight) - (layerHeight);
+
+
+		    duplicated.frame().setX(randomX);
+		    duplicated.frame().setY(randomY);
+		    duplicated.setRotation(randomRotate);
+		}
+	}
+}
+else{
+	var app = [NSApplication sharedApplication];
+	[app displayDialog:"Woah there! Please enter numbers only, please" withTitle:"RandOhm error"]
 }
