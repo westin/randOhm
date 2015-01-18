@@ -1,9 +1,11 @@
-
-
-// if(selection.length() == 0){
-// 	var app = [NSApplication sharedApplication];
-// 	[app displayDialog:"Hey man, please select at least one layer to repeat within the artboard" withTitle:"Randohm"]
-// }
+if(selection.length() == 0){
+	var app = [NSApplication sharedApplication];
+	[app displayDialog:"Woah there! Please select at least one layer to repeat within the artboard" withTitle:"RandOhm error"]
+}
+if(selection[0].parentArtboard() == null){
+	var app = [NSApplication sharedApplication];
+	[app displayDialog:"Woah there! Please put the layers you'd like to repeat within an artboard" withTitle:"RandOhm error"]
+}
 
 var layer = selection[0];
 var layerHeight = layer.frame().height();
@@ -12,9 +14,7 @@ var layerWidth = layer.frame().width();
 // log('layer height: ' + layerHeight)
 // log('layer width: ' + layerWidth)
 
-
 var artboardContainer = layer.parentArtboard();
-
 log(artboardContainer);
 
 var containerHeight = artboardContainer.frame().height()
@@ -43,7 +43,6 @@ for (var i = 0; i < selection.length(); i++) {
 
 var count = 10;
 
-
 for (var i = 0; i < selection.length(); i++) {
 	for (var j = 0; j < count; j++) {
 	    var layer = selection[i];
@@ -52,7 +51,6 @@ for (var i = 0; i < selection.length(); i++) {
 	    var randomX = Math.random() * (containerWidth - layerWidth);
 	    var randomY = Math.random() * (containerHeight - layerHeight);
 	    var randomRotate = Math.random() * 360;
-
 
 	    // extend boundaries
 	    // var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
