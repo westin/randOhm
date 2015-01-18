@@ -1,6 +1,6 @@
 Sketch Plugin: randOhm
 ======
-Sketch plugin to clone and randomly distribute layers within an artboard
+A Sketch plugin to clone, randomly rotate, and randomly distribute layers around an artboard
 
 ## Usage
  
