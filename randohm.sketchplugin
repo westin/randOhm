@@ -1,0 +1,41 @@
+// if(selection.length() == 0){
+// 	var app = [NSApplication sharedApplication];
+// 	[app displayDialog:"Hey man, please select at least one layer to repeat within the artboard" withTitle:"Randohm"]
+// }
+
+var layer = selection[0];
+var layerHeight = layer.frame().height();
+var layerWidth = layer.frame().width();
+
+// log('layer height: ' + layerHeight)
+// log('layer width: ' + layerWidth)
+
+
+var artboardContainer = layer.parentArtboard();
+
+log(artboardContainer);
+
+var containerHeight = artboardContainer.frame().height()
+var containerWidth = artboardContainer.frame().width()
+
+log('artboard height: ' + containerHeight)
+log('artboard width: ' + containerWidth)
+
+var count = 500;
+
+for (var i=0; i<count; i++) {
+    var layer = selection[0];
+    var copy = layer.duplicate();
+
+    var randomX = Math.random() * (containerWidth - layerWidth);
+    var randomY = Math.random() * (containerHeight - layerHeight);
+
+
+    // overlapping edges
+    // var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
+    // var randomY = Math.random() * (containerHeight + layerHeight) - (layerHeight) ;
+
+    // log(randomX)
+    copy.frame().setX(randomX);
+    copy.frame().setY(randomY);
+}
