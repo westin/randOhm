@@ -20,8 +20,8 @@ log(artboardContainer);
 var containerHeight = artboardContainer.frame().height()
 var containerWidth = artboardContainer.frame().width()
 
-log('artboard height: ' + containerHeight)
-log('artboard width: ' + containerWidth)
+// log('artboard height: ' + containerHeight)
+// log('artboard width: ' + containerWidth)
 
 
 for (var i = 0; i < selection.length(); i++) {
@@ -43,21 +43,24 @@ for (var i = 0; i < selection.length(); i++) {
 
 var count = 10;
 
-for (var i=0; i<count; i++) {
-    var layer = selection[0];
-    var duplicated = layer.duplicate();
 
-    var randomX = Math.random() * (containerWidth - layerWidth);
-    var randomY = Math.random() * (containerHeight - layerHeight);
-    var randomRotate = Math.random() * 360;
+for (var i = 0; i < selection.length(); i++) {
+	for (var j = 0; j < count; j++) {
+	    var layer = selection[i];
+	    var duplicated = layer.duplicate();
 
-
-    // extend boundaries
-    // var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
-    // var randomY = Math.random() * (containerHeight + layerHeight) - (layerHeight);
+	    var randomX = Math.random() * (containerWidth - layerWidth);
+	    var randomY = Math.random() * (containerHeight - layerHeight);
+	    var randomRotate = Math.random() * 360;
 
 
-    duplicated.frame().setX(randomX);
-    duplicated.frame().setY(randomY);
-    duplicated.setRotation(randomRotate);
+	    // extend boundaries
+	    // var randomX = Math.random() * (containerWidth + layerWidth) - (layerWidth);
+	    // var randomY = Math.random() * (containerHeight + layerHeight) - (layerHeight);
+
+
+	    duplicated.frame().setX(randomX);
+	    duplicated.frame().setY(randomY);
+	    duplicated.setRotation(randomRotate);
+	}
 }
